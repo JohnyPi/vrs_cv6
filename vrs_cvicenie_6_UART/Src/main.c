@@ -80,6 +80,24 @@ void process_serial_data(uint8_t ch) {
 		buffer[BUFF_LEN - 1] = '\0';
 	}
 
+	//concatenate (pripoj znak)
+	char c = ch;
+	strncat(buffer, &c, 1);
+
+	if (strstr(buffer, "ledon") != NULL)
+	{
+		LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+		led_state = '1';
+		memset(buffer, '\0', BUFF_LEN);
+	}
+
+	else if (strstr(buffer, "ledoff") != NULL)
+	{
+		LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
+		led_state = '0';
+		memset(buffer, '\0', BUFF_LEN);
+	}
+
 	return;
 }
 
